@@ -3,7 +3,8 @@ from flask import Flask, render_template, request, jsonify
 from dotenv import load_dotenv
 import os
 import re
-import easyocr
+import pytesseract
+from PIL import Image
 from openai import OpenAI
 from werkzeug.utils import secure_filename
 
@@ -18,7 +19,6 @@ client = OpenAI(
 
 UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-reader = None
 
 SYSTEM_PROMPT = """
 Ты — ИИ-ЮРИСТ.
@@ -32,18 +32,14 @@ SYSTEM_PROMPT = """
    "⚠️ Внимание: Данный сервис носит исключительно вспомогательный информационный характер. Для принятия юридических решений обращайтесь к квалифицированному юристу."
 """
 
-def init_ocr():
-    global reader
-    if reader is None:
-        print("⏳ Загрузка OCR модели...")
-        reader = easyocr.Reader(['ru', 'en'], gpu=False, verbose=False)
-    return reader
-
 def get_text_from_file(filepath, ext):
-    if ext in ['.jpg', '.jpeg', '.png', '.bmp']:
+    """Извлекает текст из файла изображения или текстового файла"""
+    if ext in ['.jpg', '.jpeg', '.png', '.bmp', '.gif', '.tiff']:
         try:
-            result = init_ocr().readtext(filepath, detail=0)
-            return "\n".join(result) if result else "Текст не распознан."
+            # Tesseract: быстро и мало памяти!
+            # lang='rus+eng' — распознаёт русский и английский
+            text = pytesseract.image_to_string(Image.open(filepath), lang='rus+eng')
+            return text.strip() if text.strip() else "Текст не распознан."
         except Exception as e:
             return f"Ошибка OCR: {e}"
     elif ext == '.txt':
