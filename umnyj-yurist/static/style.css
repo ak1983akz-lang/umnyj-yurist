@@ -1,0 +1,737 @@
+/* ============================================
+   УМНЫЙ ЮРИСТ AI — ИСПРАВЛЕН СКРОЛЛ
+   ============================================ */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    height: auto !important;
+    min-height: 100vh !important;
+}
+
+body {
+    font-family: 'Playfair Display', 'Times New Roman', serif;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0f0f1e 100%);
+    color: #d4d4d4;
+    line-height: 1.7;
+    min-height: 100vh !important;
+    height: auto !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    padding: 20px 10px;
+}
+
+/* МОДАЛЬНОЕ ОКНО */
+.modal {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 10000;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.modal-content {
+    background: linear-gradient(180deg, #1a1a2e 0%, #0f0f1e 100%);
+    border: 3px solid #c9a962;
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: 5px;
+    box-shadow: 0 0 60px rgba(201, 169, 98, 0.4);
+}
+
+.modal-header {
+    text-align: center;
+    padding: 30px 20px 20px;
+    border-bottom: 2px solid #c9a962;
+}
+
+.modal-logo {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+.modal-header h2 {
+    font-family: 'Cinzel', serif;
+    color: #c9a962;
+    font-size: 1.8rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+.modal-body {
+    padding: 25px 20px;
+}
+
+.warning-text {
+    color: #e74c3c;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    text-align: center;
+    border: 2px solid #e74c3c;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.warning-list {
+    margin: 20px 0;
+    padding-left: 20px;
+}
+
+.warning-list li {
+    margin-bottom: 10px;
+    color: #d4d4d4;
+}
+
+.modal-footer {
+    padding: 20px;
+    border-top: 2px solid #c9a962;
+    text-align: center;
+}
+
+.modal-btn {
+    background: linear-gradient(135deg, #c9a962 0%, #b8941f 100%);
+    color: #0a0a0a;
+    border: none;
+    padding: 18px 30px;
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s;
+    width: 100%;
+    max-width: 400px;
+}
+
+.modal-btn:hover {
+    background: linear-gradient(135deg, #d4af37 0%, #c9a962 100%);
+    box-shadow: 0 0 25px rgba(201, 169, 98, 0.5);
+}
+
+/* КОНТЕЙНЕР */
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 25px;
+    background: linear-gradient(180deg, #1a1a2e 0%, #0f0f1e 100%);
+    border: 3px solid #c9a962;
+    border-radius: 5px;
+    box-shadow: 0 0 40px rgba(201, 169, 98, 0.2);
+    position: relative;
+    min-height: auto;
+    height: auto;
+}
+
+.container::before {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    border: 1px solid #c9a962;
+    pointer-events: none;
+}
+
+/* ЗАГОЛОВОК */
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #c9a962;
+}
+
+.header h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 2.2rem;
+    color: #c9a962;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #888;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-size: 1rem;
+}
+
+.header-ornament,
+.response-ornament,
+.footer-ornament {
+    width: 150px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #c9a962, transparent);
+    margin: 15px auto;
+}
+
+/* ЮРИСДИКЦИЯ */
+.jurisdiction-section {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.jurisdiction-section label {
+    display: block;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    font-size: 0.85rem;
+}
+
+.jurisdiction-section select {
+    padding: 12px 25px;
+    font-size: 1rem;
+    border: 2px solid #c9a962;
+    background: #0a0a0a;
+    color: #c9a962;
+    font-family: 'Playfair Display', serif;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 350px;
+}
+
+/* СКРЫВАЕМЫЙ БЛОК */
+.collapsible-section {
+    margin-bottom: 30px;
+    border: 2px solid #2a2a3e;
+    border-radius: 5px;
+}
+
+.collapsible-header {
+    width: 100%;
+    padding: 18px 20px;
+    background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
+    color: #c9a962;
+    border: none;
+    font-family: 'Cinzel', serif;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.3s;
+}
+
+.collapsible-header:hover {
+    background: linear-gradient(135deg, #2a2a3e 0%, #1a1a2e 100%);
+}
+
+.toggle-icon {
+    font-size: 1.5rem;
+    font-weight: bold;
+    transition: transform 0.3s;
+}
+
+.collapsible-content {
+    padding: 20px;
+    background: rgba(10, 10, 10, 0.8);
+    max-height: none;
+    overflow-y: visible;
+}
+
+/* ИНСТРУКЦИИ */
+.instructions-block,
+.rules-block {
+    margin-bottom: 30px;
+}
+
+.subsection-title {
+    font-family: 'Cinzel', serif;
+    color: #c9a962;
+    text-align: center;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    border-bottom: 1px solid #c9a962;
+    padding-bottom: 10px;
+}
+
+.rules-instructions {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.rule-step {
+    display: flex;
+    gap: 15px;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.4);
+    border-left: 3px solid #c9a962;
+    border-radius: 5px;
+}
+
+.step-number {
+    background: #c9a962;
+    color: #0a0a0a;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cinzel', serif;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.step-content h4 {
+    color: #c9a962;
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.step-content p {
+    color: #aaa;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* МЕНЮ КАТЕГОРИЙ */
+.categories-menu {
+    margin-bottom: 30px;
+}
+
+.section-title-main {
+    font-family: 'Cinzel', serif;
+    text-align: center;
+    font-size: 1.3rem;
+    color: #c9a962;
+    margin-bottom: 25px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    border-bottom: 1px solid #c9a962;
+    padding-bottom: 12px;
+}
+
+.category-item {
+    margin-bottom: 12px;
+    border: 1px solid #2a2a3e;
+    border-radius: 5px;
+}
+
+.category-toggle {
+    width: 100%;
+    padding: 15px 18px;
+    background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
+    color: #c9a962;
+    border: none;
+    font-family: 'Cinzel', serif;
+    font-size: 0.9rem;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.category-toggle:hover {
+    background: linear-gradient(135deg, #2a2a3e 0%, #1a1a2e 100%);
+}
+
+.questions-list {
+    display: none;
+    background: rgba(10, 10, 10, 0.8);
+    padding: 10px 0;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.question-item {
+    width: 100%;
+    padding: 12px 18px;
+    background: transparent;
+    border: none;
+    border-left: 3px solid transparent;
+    color: #aaa;
+    text-align: left;
+    cursor: pointer;
+    font-family: 'Playfair Display', serif;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.question-item:hover {
+    background: rgba(201, 169, 98, 0.1);
+    border-left-color: #c9a962;
+    color: #c9a962;
+    padding-left: 22px;
+}
+
+/* ПОЛЕ ВОПРОСА */
+.custom-question {
+    padding: 25px 20px;
+    background: rgba(10, 10, 10, 0.8);
+    border: 2px solid #2a2a3e;
+    border-radius: 5px;
+    margin-bottom: 25px;
+}
+
+.custom-question textarea {
+    width: 100%;
+    padding: 15px;
+    font-size: 0.95rem;
+    border: 2px solid #2a2a3e;
+    background: #0a0a0a;
+    color: #d4d4d4;
+    min-height: 100px;
+    font-family: 'Playfair Display', serif;
+    margin-bottom: 12px;
+    border-radius: 5px;
+    resize: vertical;
+}
+
+.custom-question textarea:focus {
+    border-color: #c9a962;
+    outline: none;
+}
+
+.custom-question button {
+    padding: 14px 25px;
+    font-family: 'Cinzel', serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border: 2px solid #c9a962;
+    background: #c9a962;
+    color: #0a0a0a;
+    cursor: pointer;
+    margin: 5px;
+    border-radius: 5px;
+    transition: all 0.3s;
+    font-size: 0.9rem;
+}
+
+.custom-question button.secondary {
+    background: transparent;
+    color: #888;
+    border-color: #2a2a3e;
+}
+
+.custom-question button:hover:not(:disabled) {
+    background: #d4af37;
+    box-shadow: 0 0 15px rgba(201, 169, 98, 0.4);
+}
+
+.custom-question button:disabled {
+    background: #2a2a3e;
+    color: #555;
+    cursor: not-allowed;
+}
+
+/* ОТВЕТ */
+.response-section {
+    background: rgba(10, 10, 10, 0.95);
+    padding: 25px 20px;
+    border: 2px solid #c9a962;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+.response-title {
+    font-family: 'Cinzel', serif;
+    color: #c9a962;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+}
+
+.response-content {
+    background: #0a0a0a;
+    padding: 20px 15px;
+    border-left: 4px solid #c9a962;
+    margin: 15px 0;
+    line-height: 1.9;
+    max-height: none;
+    overflow-y: visible;
+    border-radius: 5px;
+}
+
+.response-content h4.section-title {
+    color: #c9a962;
+    font-family: 'Cinzel', serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 20px 0 12px;
+    font-size: 1rem;
+}
+
+.response-content .legal-ref {
+    color: #d4af37;
+    font-weight: 600;
+}
+
+.response-content .list-item {
+    margin: 8px 0;
+    padding-left: 15px;
+    color: #d4d4d4;
+}
+
+.response-content strong {
+    color: #c9a962;
+}
+
+.response-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+.copy-btn,
+.feedback-btn {
+    padding: 10px 20px;
+    font-family: 'Cinzel', serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 2px solid;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 0.85rem;
+    transition: all 0.3s;
+}
+
+.copy-btn {
+    background: transparent;
+    color: #27ae60;
+    border-color: #27ae60;
+}
+
+.copy-btn:hover {
+    background: rgba(39, 174, 96, 0.1);
+}
+
+.feedback-btn {
+    background: transparent;
+    color: #8e44ad;
+    border-color: #8e44ad;
+}
+
+.feedback-btn:hover {
+    background: rgba(142, 68, 173, 0.1);
+}
+
+.feedback-section {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #2a2a3e;
+    flex-wrap: wrap;
+}
+
+.feedback-section button {
+    padding: 10px 20px;
+    border: 2px solid;
+    cursor: pointer;
+    border-radius: 5px;
+    font-family: 'Cinzel', serif;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    transition: all 0.3s;
+}
+
+.feedback-section button:first-child {
+    background: transparent;
+    color: #27ae60;
+    border-color: #27ae60;
+}
+
+.feedback-section button:last-child {
+    background: transparent;
+    color: #c0392b;
+    border-color: #c0392b;
+}
+
+/* ПРАВИЛА GRID */
+.rules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.rule-card {
+    padding: 18px 15px;
+    background: rgba(0, 0, 0, 0.4);
+    border-left: 3px solid #c9a962;
+    border-radius: 5px;
+}
+
+.rule-card h4 {
+    color: #c9a962;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.rule-card p {
+    color: #999;
+    font-size: 0.85rem;
+    line-height: 1.6;
+}
+
+/* ПОДВАЛ */
+.footer {
+    margin-top: 40px;
+    padding-top: 25px;
+    border-top: 2px solid #c9a962;
+    text-align: center;
+}
+
+.disclaimer {
+    font-size: 0.8rem;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    padding: 15px;
+    background: rgba(192, 57, 43, 0.05);
+    border: 1px solid #c0392b;
+    border-left: 4px solid #c0392b;
+    border-radius: 5px;
+}
+
+.copyright {
+    font-size: 0.85rem;
+    color: #555;
+    letter-spacing: 2px;
+    font-family: 'Cinzel', serif;
+}
+
+/* АНИМАЦИИ */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.loading {
+    color: #c9a962;
+    font-size: 1.1rem;
+    text-align: center;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+.error {
+    color: #e74c3c;
+    background: rgba(231, 76, 60, 0.1);
+    padding: 15px;
+    border: 1px solid #e74c3c;
+    border-left: 4px solid #e74c3c;
+    border-radius: 5px;
+}
+
+/* СКРОЛЛБАР */
+.response-content::-webkit-scrollbar,
+.modal-content::-webkit-scrollbar,
+.questions-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.response-content::-webkit-scrollbar-track,
+.modal-content::-webkit-scrollbar-track,
+.questions-list::-webkit-scrollbar-track {
+    background: #0a0a0a;
+}
+
+.response-content::-webkit-scrollbar-thumb,
+.modal-content::-webkit-scrollbar-thumb,
+.questions-list::-webkit-scrollbar-thumb {
+    background: #c9a962;
+    border-radius: 3px;
+}
+
+/* МОБИЛЬНЫЕ */
+@media (max-width: 768px) {
+    html { font-size: 14px; }
+    
+    body {
+        padding: 10px 5px;
+    }
+    
+    .container {
+        padding: 25px 15px;
+    }
+    
+    .header h1 {
+        font-size: 1.5rem;
+        letter-spacing: 3px;
+    }
+    
+    .rules-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .rule-step {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .response-actions {
+        flex-direction: column;
+    }
+    
+    .copy-btn,
+    .feedback-btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    html { font-size: 13px; }
+    
+    .container {
+        padding: 20px 12px;
+    }
+    
+    .header h1 {
+        font-size: 1.3rem;
+    }
+    
+    .custom-question button {
+        width: 100%;
+        margin: 5px 0;
+    }
+}

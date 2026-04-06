@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>УМНЫЙ ЮРИСТ AI — Профессиональные юридические консультации</title>
+    <meta name="description" content="Профессиональные юридические консультации с ссылками на статьи законов.">
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    
+    <!-- МОДАЛЬНОЕ ОКНО С ПРЕДУПРЕЖДЕНИЕМ -->
+    <div id="warningModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <img src="/static/images/justitia.png" alt="Фемида" class="modal-logo">
+                <h2>⚖️ ВНИМАНИЕ</h2>
+            </div>
+            <div class="modal-body">
+                <p class="warning-text"><strong>ПЕРЕД ИСПОЛЬЗОВАНИЕМ СЕРВИСА ВЫ ОБЯЗАНЫ ОЗНАКОМИТЬСЯ С ПРАВИЛАМИ</strong></p>
+                <p>Данный сервис предоставляет информационно-справочные консультации общего характера и не заменяет очную консультацию квалифицированного юриста.</p>
+                <p>Нажимая кнопку "Я ОЗНАКОМЛЕН", вы подтверждаете что:</p>
+                <ul class="warning-list">
+                    <li>Понимаете информационный характер консультаций</li>
+                    <li>Согласны с политикой конфиденциальности</li>
+                    <li>Принимаете ограничения ответственности сервиса</li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn" onclick="acceptRules()">Я ОЗНАКОМЛЕН И ПРИНИМАЮ УСЛОВИЯ</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        
+        <!-- ЗАГОЛОВОК -->
+        <header class="header">
+            <h1>УМНЫЙ ЮРИСТ AI</h1>
+            <p class="subtitle">Профессиональные юридические консультации</p>
+            <div class="header-ornament"></div>
+        </header>
+
+        <!-- ВЫБОР ЮРИСДИКЦИИ -->
+        <section class="jurisdiction-section">
+            <label for="jurisdiction">Юрисдикция:</label>
+            <select id="jurisdiction">
+                <option value="RU">Российская Федерация</option>
+                <option value="BY">Республика Беларусь</option>
+                <option value="KZ">Республика Казахстан</option>
+            </select>
+        </section>
+
+        <!-- БЛОК С ПРАВИЛАМИ (СКРЫТЫЙ) -->
+        <section class="collapsible-section">
+            <button class="collapsible-header" onclick="toggleRules()">
+                <span>📜 ПРАВИЛА И ИНСТРУКЦИЯ ПО ИСПОЛЬЗОВАНИЮ</span>
+                <span class="toggle-icon" id="rulesToggleIcon">+</span>
+            </button>
+            <div class="collapsible-content" id="rulesContent" style="display: none;">
+                
+                <!-- ИНСТРУКЦИЯ -->
+                <div class="instructions-block">
+                    <h3 class="subsection-title">КАК ПОЛЬЗОВАТЬСЯ СЕРВИСОМ</h3>
+                    <div class="rules-instructions">
+                        <div class="rule-step">
+                            <span class="step-number">1</span>
+                            <div class="step-content">
+                                <h4>ВЫБЕРИТЕ ЮРИСДИКЦИЮ</h4>
+                                <p>В верхней части страницы укажите страну законодательства: Российская Федерация, Республика Беларусь или Республика Казахстан. От этого зависит применимость правовых норм.</p>
+                            </div>
+                        </div>
+                        <div class="rule-step">
+                            <span class="step-number">2</span>
+                            <div class="step-content">
+                                <h4>НАЙДИТЕ ВОПРОС ПО ТЕМЕ</h4>
+                                <p>Раскройте нужную категорию в меню ниже. Выберите готовый вопрос из списка — он автоматически подставится в поле ввода. Все вопросы отсортированы по алфавиту для быстрого поиска.</p>
+                            </div>
+                        </div>
+                        <div class="rule-step">
+                            <span class="step-number">3</span>
+                            <div class="step-content">
+                                <h4>ИЛИ НАПИШИТЕ СВОЙ ВОПРОС</h4>
+                                <p>Если вашего вопроса нет в списке, изложите ситуацию своими словами в поле ниже. Чем подробнее и точнее вы опишете обстоятельства, тем качественнее будет консультация.</p>
+                            </div>
+                        </div>
+                        <div class="rule-step">
+                            <span class="step-number">4</span>
+                            <div class="step-content">
+                                <h4>ПОЛУЧИТЕ РАЗВЕРНУТЫЙ ОТВЕТ</h4>
+                                <p>Система проанализирует ваш запрос и предоставит консультацию со ссылками на статьи законов, пошаговым алгоритмом действий и списком необходимых документов.</p>
+                            </div>
+                        </div>
+                        <div class="rule-step">
+                            <span class="step-number">5</span>
+                            <div class="step-content">
+                                <h4>СОХРАНИТЕ РЕЗУЛЬТАТ</h4>
+                                <p>Используйте кнопку "Копировать" для сохранения ответа. При необходимости оцените качество консультации — это помогает улучшать сервис.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ПРАВИЛА -->
+                <div class="rules-block">
+                    <h3 class="subsection-title">ПРАВИЛА ПОЛЬЗОВАНИЯ</h3>
+                    <div class="rules-grid">
+                        <div class="rule-card">
+                            <h4>1. ХАРАКТЕР КОНСУЛЬТАЦИЙ</h4>
+                            <p>Сервис предоставляет информационно-справочные консультации. Ответы не являются официальным юридическим заключением.</p>
+                        </div>
+                        <div class="rule-card">
+                            <h4>2. ТОЧНОСТЬ ДАННЫХ</h4>
+                            <p>Пользователь обязан предоставлять достоверную информацию. Сервис не несет ответственности за рекомендации на основе недостоверных данных.</p>
+                        </div>
+                        <div class="rule-card">
+                            <h4>3. КОНФИДЕНЦИАЛЬНОСТЬ</h4>
+                            <p>Данные обрабатываются в соответствии с политикой конфиденциальности. Не указывайте персональные данные третьих лиц без согласия.</p>
+                        </div>
+                        <div class="rule-card">
+                            <h4>4. ОТВЕТСТВЕННОСТЬ</h4>
+                            <p>Сервис не несет ответственности за последствия использования информации. Принятие решений осуществляется пользователем самостоятельно.</p>
+                        </div>
+                        <div class="rule-card">
+                            <h4>5. ИНТЕЛЛЕКТУАЛЬНЫЕ ПРАВА</h4>
+                            <p>Материалы предназначены для личного использования. Коммерческое использование запрещено без письменного разрешения.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- МЕНЮ КАТЕГОРИЙ С ВОПРОСАМИ -->
+        <section class="categories-menu">
+            <h2 class="section-title-main">КАТЕГОРИИ ПРАВОВЫХ ВОПРОСОВ</h2>
+            
+            <!-- Категория 1: ВОЗВРАТ ТОВАРА -->
+            <div class="category-item" data-category="vozvrat">
+                <button class="category-toggle">ВОЗВРАТ ТОВАРА <span class="arrow">▼</span></button>
+                <div class="questions-list" id="vozvrat-list"></div>
+            </div>
+
+            <!-- Категория 2: ДТП -->
+            <div class="category-item" data-category="dtp">
+                <button class="category-toggle">ДОРОЖНО-ТРАНСПОРТНЫЕ ПРОИСШЕСТВИЯ <span class="arrow">▼</span></button>
+                <div class="questions-list" id="dtp-list"></div>
+            </div>
+
+            <!-- Категория 3: ПРЕТЕНЗИИ -->
+            <div class="category-item" data-category="pretenziya">
+                <button class="category-toggle">ПРЕТЕНЗИОННАЯ РАБОТА <span class="arrow">▼</span></button>
+                <div class="questions-list" id="pretenziya-list"></div>
+            </div>
+
+            <!-- Категория 4: УСЛУГИ -->
+            <div class="category-item" data-category="uslugi">
+                <button class="category-toggle">ОКАЗАНИЕ УСЛУГ <span class="arrow">▼</span></button>
+                <div class="questions-list" id="uslugi-list"></div>
+            </div>
+
+            <!-- Категория 5: АРЕНДА -->
+            <div class="category-item" data-category="arenda">
+                <button class="category-toggle">АРЕНДА НЕДВИЖИМОСТИ <span class="arrow">▼</span></button>
+                <div class="questions-list" id="arenda-list"></div>
+            </div>
+
+            <!-- Категория 6: ТРУДОВЫЕ СПОРЫ -->
+            <div class="category-item" data-category="trud">
+                <button class="category-toggle">ТРУДОВЫЕ СПОРЫ <span class="arrow">▼</span></button>
+                <div class="questions-list" id="trud-list"></div>
+            </div>
+        </section>
+
+        <!-- ПОЛЕ ДЛЯ СОБСТВЕННОГО ВОПРОСА -->
+        <section class="custom-question">
+            <h2 class="section-title-main">СОБСТВЕННЫЙ ВОПРОС</h2>
+            <textarea id="questionInput" placeholder="Изложите вашу правовую ситуацию подробно и точно..."></textarea>
+            <button id="askBtn" onclick="askCustomQuestion()">ПОЛУЧИТЬ КОНСУЛЬТАЦИЮ</button>
+            <button id="clearBtn" class="secondary" onclick="clearCustom()">ОЧИСТИТЬ</button>
+        </section>
+
+        <!-- БЛОК ОТВЕТА -->
+        <section id="responseSection" class="response-section" style="display: none;">
+            <h2 class="response-title">ЮРИДИЧЕСКАЯ КОНСУЛЬТАЦИЯ</h2>
+            <div class="response-ornament"></div>
+            <div id="response" class="response-content"></div>
+            <div class="response-actions">
+                <button class="copy-btn" onclick="copyAnswer()">КОПИРОВАТЬ</button>
+                <button class="feedback-btn" onclick="toggleFeedback()">ОЦЕНИТЬ</button>
+            </div>
+            <div id="feedbackSection" class="feedback-section" style="display: none;">
+                <button onclick="sendFeedback('good')">ПОЛЕЗНО</button>
+                <button onclick="sendFeedback('bad')">ТРЕБУЕТ УТОЧНЕНИЯ</button>
+            </div>
+        </section>
+
+        <!-- ПОДВАЛ -->
+        <footer class="footer">
+            <div class="footer-ornament"></div>
+            <p class="disclaimer">
+                ВНИМАНИЕ: Данный сервис носит исключительно вспомогательный информационный характер. 
+                Для представления интересов в суде и подготовки процессуальных документов 
+                обращайтесь к квалифицированным юристам.
+            </p>
+            <p class="copyright">2024 УМНЫЙ ЮРИСТ AI. Все права защищены.</p>
+        </footer>
+
+    </div>
+
+    <!-- Подключаем JavaScript -->
+    <script src="/static/script.js"></script>
+</body>
+</html>
