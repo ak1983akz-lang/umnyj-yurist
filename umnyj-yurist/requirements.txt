@@ -1,5 +1,0 @@
-fflask==3.0.0
-easyocr==1.7.2
-openai==1.50.0
-python-dotenv==1.0.0
-Pillow
