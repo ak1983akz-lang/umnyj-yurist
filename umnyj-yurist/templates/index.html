@@ -4,21 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- SEO META TAGS -->
+    <!-- === SEO META TAGS === -->
     <title>Правовой помощник онлайн | Законы РБ, РФ, РК — УМНЫЙ ЮРИСТ AI</title>
     <meta name="description" content="Бесплатный информационно-справочный сервис: образцы документов, алгоритмы действий, разъяснения законов РБ, РФ, РК. Пошаговые инструкции по правовым вопросам.">
-    <meta name="keywords" content="правовой помощник, законы РБ справка, образцы документов бесплатно, алгоритм действий, права потребителя, жилищный кодекс, трудовой кодекс, ДТП инструкция, возврат товара, претензия образец">
+    <meta name="keywords" content="правовой помощник, законы РБ справка, образцы документов бесплатно, алгоритм действий, права потребителя, жилищный кодекс, трудовой кодекс, ДТП инструкция, возврат товара, претензия образец, юридическая справка онлайн">
     <meta name="author" content="Umnyj-Yurist.xyz">
     <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://umnyj-yurist.xyz">
     
-    <!-- OPEN GRAPH (для соцсетей) -->
+    <!-- === OPEN GRAPH (для Telegram, VK, WhatsApp) === -->
     <meta property="og:title" content="УМНЫЙ ЮРИСТ AI — Информационно-справочный правовой сервис">
     <meta property="og:description" content="Бесплатный AI-помощник по законодательству: образцы документов, пошаговые алгоритмы, справки по законам РБ, РФ, РК">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://umnyj-yurist.xyz">
     <meta property="og:locale" content="ru_RU">
+    <meta property="og:image" content="https://umnyj-yurist.xyz/static/images/og-image.jpg">
     
-    <!-- SCHEMA.ORG MIKRORAZMETKA -->
+    <!-- === SCHEMA.ORG (Микроразметка для Google/Яндекс) === -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -29,7 +31,7 @@
         "description": "Информационно-справочный сервис по законодательству Республики Беларусь, Российской Федерации и Республики Казахстан",
         "potentialAction": {
             "@type": "SearchAction",
-            "target": "https://umnyj-yurist.xyz/search?q={search_term_string}",
+            "target": "https://umnyj-yurist.xyz/?q={search_term_string}",
             "query-input": "required name=search_term_string"
         },
         "inLanguage": "ru-RU",
@@ -40,12 +42,13 @@
     }
     </script>
     
+    <!-- === СТИЛИ И ШРИФТЫ === -->
     <link rel="stylesheet" href="/static/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
     
-    <!-- МОДАЛЬНОЕ ОКНО С ПРЕДУПРЕЖДЕНИЕМ -->
+    <!-- === МОДАЛЬНОЕ ОКНО С ПРЕДУПРЕЖДЕНИЕМ === -->
     <div id="warningModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -70,14 +73,14 @@
 
     <div class="container">
         
-        <!-- ЗАГОЛОВОК -->
+        <!-- === ЗАГОЛОВОК (H1 для SEO) === -->
         <header class="header">
             <h1>УМНЫЙ ЮРИСТ AI</h1>
             <p class="subtitle">Информационно-справочный AI-сервис по законодательству РБ, РФ, РК</p>
             <div class="header-ornament"></div>
         </header>
 
-        <!-- ВЫБОР ЮРИСДИКЦИИ -->
+        <!-- === ВЫБОР ЮРИСДИКЦИИ === -->
         <section class="jurisdiction-section">
             <label for="jurisdiction">Выберите юрисдикцию (страну законодательства):</label>
             <select id="jurisdiction">
@@ -87,7 +90,7 @@
             </select>
         </section>
 
-        <!-- БЛОК С ПРАВИЛАМИ (СКРЫТЫЙ) -->
+        <!-- === БЛОК С ПРАВИЛАМИ === -->
         <section class="collapsible-section">
             <button class="collapsible-header" onclick="toggleRules()">
                 <span>📜 ПРАВИЛА И ИНСТРУКЦИЯ ПО ИСПОЛЬЗОВАНИЮ</span>
@@ -95,7 +98,6 @@
             </button>
             <div class="collapsible-content" id="rulesContent" style="display: none;">
                 
-                <!-- ИНСТРУКЦИЯ -->
                 <div class="instructions-block">
                     <h3 class="subsection-title">КАК ПОЛЬЗОВАТЬСЯ СЕРВИСОМ</h3>
                     <div class="rules-instructions">
@@ -103,112 +105,82 @@
                             <span class="step-number">1</span>
                             <div class="step-content">
                                 <h4>ВЫБЕРИТЕ ЮРИСДИКЦИЮ</h4>
-                                <p>В верхней части страницы укажите страну законодательства: Российская Федерация, Республика Беларусь или Республика Казахстан. От этого зависит применимость правовых норм.</p>
+                                <p>Укажите страну законодательства: РФ, РБ или РК. От этого зависит применимость правовых норм.</p>
                             </div>
                         </div>
                         <div class="rule-step">
                             <span class="step-number">2</span>
                             <div class="step-content">
                                 <h4>НАЙДИТЕ ВОПРОС ПО ТЕМЕ</h4>
-                                <p>Раскройте нужную категорию в меню ниже. Выберите готовый вопрос из списка — он автоматически подставится в поле ввода. Все вопросы отсортированы по алфавиту для быстрого поиска.</p>
+                                <p>Выберите готовый вопрос из списка категорий или напишите свой.</p>
                             </div>
                         </div>
                         <div class="rule-step">
                             <span class="step-number">3</span>
                             <div class="step-content">
-                                <h4>ИЛИ НАПИШИТЕ СВОЙ ВОПРОС</h4>
-                                <p>Если вашего вопроса нет в списке, изложите ситуацию своими словами в поле ниже. Чем подробнее и точнее вы опишете обстоятельства, тем качественнее будет справка.</p>
-                            </div>
-                        </div>
-                        <div class="rule-step">
-                            <span class="step-number">4</span>
-                            <div class="step-content">
-                                <h4>ПОЛУЧИТЕ РАЗВЕРНУТЫЙ ОТВЕТ</h4>
-                                <p>Система проанализирует ваш запрос и предоставит информационную справку со ссылками на статьи законов, пошаговым алгоритмом действий и списком необходимых документов.</p>
-                            </div>
-                        </div>
-                        <div class="rule-step">
-                            <span class="step-number">5</span>
-                            <div class="step-content">
-                                <h4>СОХРАНИТЕ РЕЗУЛЬТАТ</h4>
-                                <p>Используйте кнопку "Копировать" для сохранения ответа. При необходимости оцените качество информации — это помогает улучшать сервис.</p>
+                                <h4>ПОЛУЧИТЕ СПРАВКУ</h4>
+                                <p>Система предоставит информацию со ссылками на статьи законов и алгоритмом действий.</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- ПРАВИЛА -->
                 <div class="rules-block">
                     <h3 class="subsection-title">ПРАВИЛА ПОЛЬЗОВАНИЯ</h3>
                     <div class="rules-grid">
                         <div class="rule-card">
                             <h4>1. ХАРАКТЕР ИНФОРМАЦИИ</h4>
-                            <p>Сервис предоставляет информационно-справочные материалы. Ответы не являются официальным юридическим заключением или консультацией.</p>
+                            <p>Сервис предоставляет информационно-справочные материалы. Ответы не являются официальным юридическим заключением.</p>
                         </div>
                         <div class="rule-card">
-                            <h4>2. ТОЧНОСТЬ ДАННЫХ</h4>
-                            <p>Пользователь обязан предоставлять достоверную информацию. Сервис не несет ответственности за рекомендации на основе недостоверных данных.</p>
+                            <h4>2. ОТВЕТСТВЕННОСТЬ</h4>
+                            <p>Сервис не несет ответственности за последствия использования информации. Решения принимает пользователь.</p>
                         </div>
                         <div class="rule-card">
                             <h4>3. КОНФИДЕНЦИАЛЬНОСТЬ</h4>
-                            <p>Данные обрабатываются в соответствии с политикой конфиденциальности. Не указывайте персональные данные третьих лиц без согласия.</p>
-                        </div>
-                        <div class="rule-card">
-                            <h4>4. ОТВЕТСТВЕННОСТЬ</h4>
-                            <p>Сервис не несет ответственности за последствия использования информации. Принятие решений осуществляется пользователем самостоятельно.</p>
-                        </div>
-                        <div class="rule-card">
-                            <h4>5. ИНТЕЛЛЕКТУАЛЬНЫЕ ПРАВА</h4>
-                            <p>Материалы предназначены для личного использования. Коммерческое использование запрещено без письменного разрешения.</p>
+                            <p>Не указывайте персональные данные третьих лиц без согласия.</p>
                         </div>
                     </div>
                 </div>
-
             </div>
         </section>
 
-        <!-- МЕНЮ КАТЕГОРИЙ С ВОПРОСАМИ -->
+        <!-- === КАТЕГОРИИ (Ключевые слова в заголовках) === -->
         <section class="categories-menu">
             <h2 class="section-title-main">КАТЕГОРИИ ПРАВОВЫХ ВОПРОСОВ</h2>
             
-            <!-- Категория 1: ВОЗВРАТ ТОВАРА -->
             <div class="category-item" data-category="vozvrat">
                 <button class="category-toggle">ВОЗВРАТ ТОВАРА И ЗАЩИТА ПРАВ ПОТРЕБИТЕЛЕЙ <span class="arrow">▼</span></button>
                 <div class="questions-list" id="vozvrat-list"></div>
             </div>
 
-            <!-- Категория 2: ДТП -->
             <div class="category-item" data-category="dtp">
                 <button class="category-toggle">ДОРОЖНО-ТРАНСПОРТНЫЕ ПРОИСШЕСТВИЯ (ДТП) <span class="arrow">▼</span></button>
                 <div class="questions-list" id="dtp-list"></div>
             </div>
 
-            <!-- Категория 3: ПРЕТЕНЗИИ -->
             <div class="category-item" data-category="pretenziya">
                 <button class="category-toggle">ПРЕТЕНЗИОННАЯ РАБОТА И ОБРАЗЦЫ ДОКУМЕНТОВ <span class="arrow">▼</span></button>
                 <div class="questions-list" id="pretenziya-list"></div>
             </div>
 
-            <!-- Категория 4: УСЛУГИ -->
             <div class="category-item" data-category="uslugi">
                 <button class="category-toggle">ОКАЗАНИЕ УСЛУГ И ВЫПОЛНЕНИЕ РАБОТ <span class="arrow">▼</span></button>
                 <div class="questions-list" id="uslugi-list"></div>
             </div>
 
-            <!-- Категория 5: АРЕНДА -->
             <div class="category-item" data-category="arenda">
                 <button class="category-toggle">АРЕНДА НЕДВИЖИМОСТИ И ЖИЛИЩНЫЕ ВОПРОСЫ <span class="arrow">▼</span></button>
                 <div class="questions-list" id="arenda-list"></div>
             </div>
 
-            <!-- Категория 6: ТРУДОВЫЕ СПОРЫ -->
             <div class="category-item" data-category="trud">
                 <button class="category-toggle">ТРУДОВЫЕ СПОРЫ И ПРАВА РАБОТНИКОВ <span class="arrow">▼</span></button>
                 <div class="questions-list" id="trud-list"></div>
             </div>
         </section>
 
-        <!-- ПОЛЕ ДЛЯ СОБСТВЕННОГО ВОПРОСА -->
+        <!-- === ПОЛЕ ВОПРОСА === -->
         <section class="custom-question">
             <h2 class="section-title-main">ЗАДАТЬ СВОЙ ПРАВОВОЙ ВОПРОС</h2>
             <textarea id="questionInput" placeholder="Опишите вашу ситуацию подробно: что произошло, какие документы есть, чего вы хотите добиться..."></textarea>
@@ -216,7 +188,7 @@
             <button id="clearBtn" class="secondary" onclick="clearCustom()">ОЧИСТИТЬ</button>
         </section>
 
-        <!-- БЛОК ОТВЕТА -->
+        <!-- === БЛОК ОТВЕТА === -->
         <section id="responseSection" class="response-section" style="display: none;">
             <h2 class="response-title">ИНФОРМАЦИОННАЯ СПРАВКА</h2>
             <div class="response-ornament"></div>
@@ -231,7 +203,7 @@
             </div>
         </section>
 
-        <!-- ПОДВАЛ -->
+        <!-- === ПОДВАЛ (Footer) === -->
         <footer class="footer">
             <div class="footer-ornament"></div>
             <p class="disclaimer">
@@ -245,7 +217,7 @@
 
     </div>
 
-    <!-- Подключаем JavaScript -->
+    <!-- === СКРИПТЫ === -->
     <script src="/static/script.js"></script>
 </body>
 </html>
