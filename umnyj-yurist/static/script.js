@@ -1,86 +1,85 @@
 /* ============================================
    УМНЫЙ ЮРИСТ AI — JavaScript функционал
-   Версия: 2.0
-   Полная совместимость с мобильными устройствами
+   Версия: 2.1 (с интеграцией ВК и улучшенной логикой)
    ============================================ */
 
 // Глобальные переменные
 let lastAnswer = '';
 let rulesAccepted = false;
+const CURRENT_DATE = new Date().toLocaleDateString('ru-RU'); // Текущая дата для бейджа
+
+// Официальные источники права по юрисдикциям
+const LEGAL_SOURCES = {
+    'RU': { name: 'КонсультантПлюс', url: 'https://www.consultant.ru' },
+    'BY': { name: 'Pravo.by', url: 'https://pravo.by' },
+    'KZ': { name: 'Adilet', url: 'https://adilet.zan.kz' }
+};
 
 // ============================================
 // ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ СТРАНИЦЫ
 // ============================================
 document.addEventListener('DOMContentLoaded', function() {
-    // Показываем модальное окно с предупреждением
+    // 1. Показываем модальное окно с предупреждением
     showWarningModal();
     
-    // Инициализируем меню категорий
+    // 2. Инициализируем меню категорий
     initCategoryMenus();
     
-    // Восстанавливаем состояние принятия правил из localStorage
+    // 3. Восстанавливаем состояние принятия правил
     checkRulesAccepted();
     
-    console.log('УМНЫЙ ЮРИСТ AI — готов к работе');
+    // 4. Обновляем дату в бейдже актуальности
+    updateDateBadge();
+    
+    // 5. Настраиваем аналитику для кнопки ВК
+    initVKAnalytics();
+    
+    console.log('УМНЫЙ ЮРИСТ AI v2.1 — готов к работе');
 });
 
 // ============================================
 // МОДАЛЬНОЕ ОКНО С ПРЕДУПРЕЖДЕНИЕМ
 // ============================================
 
-// Показываем модальное окно
 function showWarningModal() {
     const modal = document.getElementById('warningModal');
     if (modal && !rulesAccepted) {
         modal.style.display = 'flex';
-        // Блокируем прокрутку фона
         document.body.style.overflow = 'hidden';
     }
 }
 
-// Пользователь принял правила
 function acceptRules() {
     rulesAccepted = true;
-    
-    // Сохраняем в localStorage чтобы не показывать повторно
     try {
         localStorage.setItem('umnyjJurist_rulesAccepted', 'true');
     } catch (e) {
-        console.log('LocalStorage недоступен');
+        console.warn('LocalStorage недоступен');
     }
     
-    // Скрываем модальное окно
     const modal = document.getElementById('warningModal');
     if (modal) {
         modal.style.display = 'none';
         document.body.style.overflow = '';
     }
-    
-    // Разблокируем интерфейс
     enableInterface();
 }
 
-// Проверяем приняты ли правила ранее
 function checkRulesAccepted() {
     try {
         const accepted = localStorage.getItem('umnyjJurist_rulesAccepted');
         if (accepted === 'true') {
             rulesAccepted = true;
-            // Скрываем модальное окно если есть
             const modal = document.getElementById('warningModal');
-            if (modal) {
-                modal.style.display = 'none';
-            }
+            if (modal) modal.style.display = 'none';
             enableInterface();
         }
     } catch (e) {
-        console.log('LocalStorage недоступен');
+        console.warn('LocalStorage недоступен');
     }
 }
 
-// Разблокируем интерфейс после принятия правил
 function enableInterface() {
-    // Можно добавить дополнительную логику если нужно
     console.log('Интерфейс разблокирован');
 }
 
@@ -88,19 +87,23 @@ function enableInterface() {
 // СКРЫВАЕМЫЙ БЛОК С ПРАВИЛАМИ
 // ============================================
 
-// Переключение видимости блока с правилами
 function toggleRules() {
     const content = document.getElementById('rulesContent');
     const icon = document.getElementById('rulesToggleIcon');
+    const header = document.querySelector('.collapsible-header');
     
     if (!content) return;
     
-    if (content.style.display === 'none' || !content.style.display) {
+    const isVisible = content.style.display === 'block';
+    
+    if (!isVisible) {
         content.style.display = 'block';
-        icon.textContent = '−';
+        if (icon) icon.textContent = '−';
+        if (header) header.setAttribute('aria-expanded', 'true');
     } else {
         content.style.display = 'none';
-        icon.textContent = '+';
+        if (icon) icon.textContent = '+';
+        if (header) header.setAttribute('aria-expanded', 'false');
     }
 }
 
@@ -108,7 +111,6 @@ function toggleRules() {
 // МЕНЮ КАТЕГОРИЙ И ВОПРОСОВ
 // ============================================
 
-// База вопросов: 15 вопросов на категорию, по алфавиту
 const QUESTIONS_DB = {
     "vozvrat": [
         "Возврат денежных средств за товар ненадлежащего качества порядок",
@@ -127,7 +129,6 @@ const QUESTIONS_DB = {
         "Как вернуть товар если утерян кассовый чек",
         "Как вернуть товар купленный по акции или со скидкой"
     ],
-    
     "dtp": [
         "Взыскание морального вреда с виновника ДТП процедура",
         "Взыскание ущерба с виновника ДТП если у него нет страховки",
@@ -145,7 +146,6 @@ const QUESTIONS_DB = {
         "Страховая занижает сумму выплаты по ОСАГО порядок оспаривания",
         "Что делать если виновник ДТП не вписан в полис ОСАГО"
     ],
-    
     "pretenziya": [
         "Вручение претензии лично под роспись порядок оформления",
         "Документы которые необходимо приложить к досудебной претензии",
@@ -163,7 +163,6 @@ const QUESTIONS_DB = {
         "Способы направления претензии которые имеют юридическую силу",
         "Что делать если претензия возвращена с пометкой адресат выбыл"
     ],
-    
     "uslugi": [
         "Взыскание неустойки за просрочку оказания услуги расчет и порядок",
         "Возврат аванса за неоказанную услугу основания и процедура",
@@ -181,7 +180,6 @@ const QUESTIONS_DB = {
         "Что делать если услуга оказана частично а оплачена полностью",
         "Что делать если исполнитель отказывается выдавать документы об оказании услуги"
     ],
-    
     "arenda": [
         "Возврат обеспечительного платежа при выезде из арендованного помещения",
         "Досрочное расторжение договора аренды по инициативе арендатора условия",
@@ -199,7 +197,6 @@ const QUESTIONS_DB = {
         "Что делать если арендодатель не возвращает помещение после окончания договора",
         "Что делать если арендодатель препятствует доступу в арендованное помещение"
     ],
-    
     "trud": [
         "Взыскание компенсации за задержку заработной платы порядок расчета",
         "Восстановление на работе после незаконного увольнения процедура",
@@ -219,10 +216,8 @@ const QUESTIONS_DB = {
     ]
 };
 
-// Инициализация меню категорий
 function initCategoryMenus() {
     const toggles = document.querySelectorAll('.category-toggle');
-    
     toggles.forEach(function(toggle) {
         toggle.addEventListener('click', function() {
             const categoryItem = this.closest('.category-item');
@@ -232,23 +227,16 @@ function initCategoryMenus() {
             
             if (!questionsList) return;
             
-            // Проверяем текущее состояние
             const isVisible = questionsList.style.display === 'block';
             
-            // Закрываем все остальные списки
-            document.querySelectorAll('.questions-list').forEach(function(list) {
-                list.style.display = 'none';
-            });
-            document.querySelectorAll('.arrow').forEach(function(a) {
-                a.textContent = '▼';
-            });
+            // Закрываем все остальные
+            document.querySelectorAll('.questions-list').forEach(list => list.style.display = 'none');
+            document.querySelectorAll('.arrow').forEach(a => a.textContent = '▼');
             
-            // Открываем/закрываем текущий
             if (!isVisible) {
                 questionsList.style.display = 'block';
                 if (arrow) arrow.textContent = '▲';
                 
-                // Загружаем вопросы если ещё не загружены
                 if (questionsList.children.length === 0) {
                     loadQuestions(category, questionsList);
                 }
@@ -257,12 +245,9 @@ function initCategoryMenus() {
     });
 }
 
-// Загрузка вопросов в список
 function loadQuestions(category, container) {
     const questions = QUESTIONS_DB[category] || [];
-    
-    // Сортируем по алфавиту на всякий случай
-    questions.sort();
+    questions.sort(); // Сортировка по алфавиту
     
     questions.forEach(function(question, index) {
         const btn = document.createElement('button');
@@ -275,21 +260,17 @@ function loadQuestions(category, container) {
     });
 }
 
-// Выбор вопроса из списка
 function selectQuestion(question, category) {
     const input = document.getElementById('questionInput');
     if (input) {
         input.value = question;
         input.focus();
     }
-    
-    // Отправляем вопрос
     askCustomQuestion(category);
     
-    // Плавная прокрутка к ответу
     const responseSection = document.getElementById('responseSection');
     if (responseSection) {
-        setTimeout(function() {
+        setTimeout(() => {
             responseSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }, 100);
     }
@@ -299,46 +280,42 @@ function selectQuestion(question, category) {
 // ОТПРАВКА ВОПРОСА И ПОЛУЧЕНИЕ ОТВЕТА
 // ============================================
 
-// Отправка собственного вопроса
 function askCustomQuestion(category) {
     const questionInput = document.getElementById('questionInput');
-    const jurisdiction = document.getElementById('jurisdiction');
+    const jurisdictionSelect = document.getElementById('jurisdiction');
     const responseSection = document.getElementById('responseSection');
-    const response = document.getElementById('response');
+    const responseDiv = document.getElementById('response');
     const askBtn = document.getElementById('askBtn');
     
-    if (!questionInput || !jurisdiction || !responseSection || !response) {
-        alert('Ошибка: элементы интерфейса не найдены');
+    if (!questionInput || !jurisdictionSelect || !responseSection || !responseDiv) {
+        alert('Ошибка интерфейса. Перезагрузите страницу.');
         return;
     }
     
     const question = questionInput.value.trim();
-    const jurisdictionValue = jurisdiction.value;
+    const jurisdiction = jurisdictionSelect.value;
     
-    // Валидация
     if (!question || question.length < 5) {
-        alert('Пожалуйста, изложите вопрос более подробно (минимум 5 символов)');
+        alert('Пожалуйста, опишите вопрос подробнее (минимум 5 символов).');
         questionInput.focus();
         return;
     }
     
-    // Блокируем интерфейс
+    // Блокировка кнопки
     if (askBtn) {
         askBtn.disabled = true;
-        askBtn.textContent = 'ФОРМИРУЮ ОТВЕТ...';
+        askBtn.textContent = 'АНАЛИЗИРУЮ ЗАКОНЫ...';
     }
     
     responseSection.style.display = 'block';
-    response.innerHTML = '<div class="loading">Анализ нормативной базы и формирование консультации...</div>';
+    responseDiv.innerHTML = '<div class="loading">⏳ Анализ нормативной базы и формирование консультации...</div>';
     
     const feedbackSection = document.getElementById('feedbackSection');
-    if (feedbackSection) {
-        feedbackSection.style.display = 'none';
-    }
+    if (feedbackSection) feedbackSection.style.display = 'none';
     
     lastAnswer = '';
     
-    // Отправка запроса на сервер
+    // Отправка запроса
     fetch('/api/ask', {
         method: 'POST',
         headers: {
@@ -347,33 +324,37 @@ function askCustomQuestion(category) {
         },
         body: JSON.stringify({
             question: question,
-            jurisdiction: jurisdictionValue,
+            jurisdiction: jurisdiction,
             category: category || 'Пользовательский вопрос'
         })
     })
-    .then(function(res) {
-        if (!res.ok) {
-            throw new Error('Ошибка сервера: ' + res.status);
-        }
+    .then(res => {
+        if (!res.ok) throw new Error('Ошибка сервера: ' + res.status);
         return res.json();
     })
-    .then(function(data) {
+    .then(data => {
         if (data && data.success) {
             lastAnswer = data.answer;
-            response.innerHTML = '<div class="legal-answer">' + data.answer + '</div>';
-            if (feedbackSection) {
-                feedbackSection.style.display = 'flex';
+            // Добавляем ссылку на официальный источник
+            const sourceLink = getSourceLinkHTML(jurisdiction);
+            responseDiv.innerHTML = '<div class="legal-answer">' + data.answer + '</div>' + sourceLink;
+            
+            if (feedbackSection) feedbackSection.style.display = 'flex';
+            
+            // Аналитика успешного ответа
+            if (typeof ym === 'function') {
+                ym(108448723, 'reachGoal', 'answer_received');
             }
         } else {
-            var errorMsg = data && data.error ? data.error : 'Неизвестная ошибка';
-            response.innerHTML = '<p class="error">Ошибка: ' + errorMsg + '</p>';
+            const errorMsg = data && data.error ? data.error : 'Неизвестная ошибка';
+            responseDiv.innerHTML = '<p class="error">❌ Ошибка: ' + errorMsg + '</p>';
         }
     })
-    .catch(function(err) {
+    .catch(err => {
         console.error('Ошибка запроса:', err);
-        response.innerHTML = '<p class="error">Не удалось получить ответ. Проверьте подключение к интернету и попробуйте снова.</p>';
+        responseDiv.innerHTML = '<p class="error">⚠️ Не удалось получить ответ. Проверьте интернет и попробуйте снова.</p>';
     })
-    .finally(function() {
+    .finally(() => {
         if (askBtn) {
             askBtn.disabled = false;
             askBtn.textContent = 'ПОЛУЧИТЬ КОНСУЛЬТАЦИЮ';
@@ -381,26 +362,25 @@ function askCustomQuestion(category) {
     });
 }
 
-// Очистка поля и ответа
+// Генерация HTML ссылки на источник
+function getSourceLinkHTML(jurisdiction) {
+    const source = LEGAL_SOURCES[jurisdiction] || LEGAL_SOURCES['RU'];
+    return `<p class="source-note">🔗 Проверьте актуальность нормы в официальном источнике: <a href="${source.url}" target="_blank" class="legal-source-link" rel="noopener">${source.name}</a></p>`;
+}
+
 function clearCustom() {
     const input = document.getElementById('questionInput');
     const responseSection = document.getElementById('responseSection');
-    const response = document.getElementById('response');
+    const responseDiv = document.getElementById('response');
     const feedbackSection = document.getElementById('feedbackSection');
     
     if (input) {
         input.value = '';
         input.focus();
     }
-    if (response) {
-        response.innerHTML = '';
-    }
-    if (responseSection) {
-        responseSection.style.display = 'none';
-    }
-    if (feedbackSection) {
-        feedbackSection.style.display = 'none';
-    }
+    if (responseDiv) responseDiv.innerHTML = '';
+    if (responseSection) responseSection.style.display = 'none';
+    if (feedbackSection) feedbackSection.style.display = 'none';
     lastAnswer = '';
 }
 
@@ -408,33 +388,26 @@ function clearCustom() {
 // КОПИРОВАНИЕ И ОЦЕНКА ОТВЕТА
 // ============================================
 
-// Копирование ответа в буфер обмена
 function copyAnswer() {
     if (!lastAnswer) {
         alert('Нет ответа для копирования');
         return;
     }
     
-    // Удаляем HTML теги для чистого текста
-    var temp = document.createElement('div');
+    // Очищаем от HTML тегов для буфера обмена
+    const temp = document.createElement('div');
     temp.innerHTML = lastAnswer;
-    var plainText = temp.innerText || temp.textContent;
+    const plainText = temp.innerText || temp.textContent;
     
-    // Копируем
     if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(plainText).then(function() {
-            showCopySuccess();
-        }).catch(function() {
-            fallbackCopy(plainText);
-        });
+        navigator.clipboard.writeText(plainText).then(showCopySuccess).catch(() => fallbackCopy(plainText));
     } else {
         fallbackCopy(plainText);
     }
 }
 
-// Резервный метод копирования для старых браузеров
 function fallbackCopy(text) {
-    var textarea = document.createElement('textarea');
+    const textarea = document.createElement('textarea');
     textarea.value = text;
     textarea.style.position = 'fixed';
     textarea.style.left = '-9999px';
@@ -448,75 +421,87 @@ function fallbackCopy(text) {
     } catch (err) {
         alert('Не удалось скопировать. Выделите текст вручную.');
     }
-    
     document.body.removeChild(textarea);
 }
 
-// Показываем успех копирования
 function showCopySuccess() {
-    var btn = document.querySelector('.copy-btn');
+    const btn = document.querySelector('.copy-btn');
     if (btn) {
-        var originalText = btn.textContent;
-        btn.textContent = 'СКОПИРОВАНО';
-        setTimeout(function() {
-            btn.textContent = originalText;
-        }, 2000);
+        const originalText = btn.textContent;
+        btn.textContent = '✅ СКОПИРОВАНО';
+        setTimeout(() => { btn.textContent = originalText; }, 2000);
     }
 }
 
-// Переключение секции оценки
 function toggleFeedback() {
-    var fb = document.getElementById('feedbackSection');
+    const fb = document.getElementById('feedbackSection');
     if (fb) {
         fb.style.display = (fb.style.display === 'none' || !fb.style.display) ? 'flex' : 'none';
     }
 }
 
-// Отправка оценки
 function sendFeedback(type) {
-    // Здесь можно добавить отправку на сервер для аналитики
+    // Здесь можно добавить отправку на сервер
     console.log('Feedback:', type);
     
-    var msg = type === 'good' ? 'Спасибо за положительную оценку!' : 'Спасибо, мы учтём ваши замечания';
+    const msg = type === 'good' ? 'Спасибо! Рады, что помогли.' : 'Спасибо за отзыв. Мы становимся лучше.';
     alert(msg);
     
-    var fb = document.getElementById('feedbackSection');
-    if (fb) {
-        fb.style.display = 'none';
+    // Аналитика фидбека
+    if (typeof ym === 'function') {
+        ym(108448723, 'reachGoal', type === 'good' ? 'feedback_good' : 'feedback_bad');
     }
+    
+    const fb = document.getElementById('feedbackSection');
+    if (fb) fb.style.display = 'none';
 }
 
 // ============================================
-// УТИЛИТЫ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ
+// УТИЛИТЫ И ДОПОЛНИТЕЛЬНЫЕ ФУНКЦИИ
 // ============================================
 
-// Предотвращаем зум на двойном тапе (iOS)
-document.addEventListener('touchstart', function(event) {
-    if (event.touches.length > 1) {
-        event.preventDefault();
+// Обновление даты в бейдже
+function updateDateBadge() {
+    const badge = document.getElementById('lastUpdate');
+    if (badge) {
+        badge.textContent = CURRENT_DATE;
     }
+}
+
+// Аналитика клика по ВК
+function initVKAnalytics() {
+    const vkLink = document.querySelector('.vk-link');
+    if (vkLink) {
+        vkLink.addEventListener('click', function() {
+            if (typeof ym === 'function') {
+                ym(108448723, 'reachGoal', 'vk_click');
+            }
+            console.log('Переход в группу ВКонтакте');
+        });
+    }
+}
+
+// Предотвращение зума на iOS
+document.addEventListener('touchstart', function(event) {
+    if (event.touches.length > 1) event.preventDefault();
 }, { passive: false });
 
 // Быстрый клик на мобильных
-var lastTouchEnd = 0;
+let lastTouchEnd = 0;
 document.addEventListener('touchend', function(event) {
-    var now = Date.now();
-    if (now - lastTouchEnd <= 300) {
-        event.preventDefault();
-    }
+    const now = Date.now();
+    if (now - lastTouchEnd <= 300) event.preventDefault();
     lastTouchEnd = now;
 }, false);
 
-// Обработка клавиш: Ctrl+Enter отправляет вопрос
+// Горячая клавиша Ctrl+Enter
 document.addEventListener('keydown', function(event) {
-    var input = document.getElementById('questionInput');
-    var askBtn = document.getElementById('askBtn');
+    const input = document.getElementById('questionInput');
+    const askBtn = document.getElementById('askBtn');
     
     if (input && askBtn && (event.ctrlKey || event.metaKey) && event.key === 'Enter') {
         event.preventDefault();
-        if (!askBtn.disabled) {
-            askCustomQuestion();
-        }
+        if (!askBtn.disabled) askCustomQuestion();
     }
 });
 
@@ -528,16 +513,12 @@ document.addEventListener('input', function(event) {
     }
 });
 
-// Проверка здоровья сервера при загрузке
+// Health-check при загрузке
 window.addEventListener('load', function() {
     fetch('/health')
-        .then(function(res) { return res.json(); })
-        .then(function(data) {
-            if (data && data.status === 'ok') {
-                console.log('Сервер подключён');
-            }
+        .then(res => res.json())
+        .then(data => {
+            if (data && data.status === 'ok') console.log('Сервер подключён');
         })
-        .catch(function() {
-            console.warn('Сервер может быть недоступен');
-        });
+        .catch(() => console.warn('Сервер может быть недоступен'));
 });
