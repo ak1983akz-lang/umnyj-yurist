@@ -21,8 +21,15 @@
     <meta property="og:url" content="https://umnyj-yurist.xyz">
     <meta property="og:locale" content="ru_RU">
     <meta property="og:image" content="https://umnyj-yurist.xyz/static/images/og-image.jpg">
+    <meta property="og:site_name" content="УМНЫЙ ЮРИСТ AI">
     
-    <!-- === SCHEMA.ORG (Микроразметка для Google/Яндекс) === -->
+    <!-- === TWITTER CARD === -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="УМНЫЙ ЮРИСТ AI — Правовой помощник">
+    <meta name="twitter:description" content="Бесплатные консультации по законодательству РБ, РФ, РК">
+    <meta name="twitter:image" content="https://umnyj-yurist.xyz/static/images/og-image.jpg">
+    
+    <!-- === SCHEMA.ORG (Микроразметка) === -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -39,13 +46,16 @@
         "inLanguage": "ru-RU",
         "publisher": {
             "@type": "Organization",
-            "name": "Umnyj-Yurist.xyz"
+            "name": "Umnyj-Yurist.xyz",
+            "url": "https://umnyj-yurist.xyz",
+            "sameAs": [
+                "https://vk.com/club237514379"
+            ]
         }
     }
     </script>
     
-    <!-- === YANDEX.METRIKA COUNTER (ID: 108448723) === -->
-    <!-- Yandex.Metrika counter -->
+    <!-- === YANDEX.METRIKA === -->
     <script type="text/javascript">
         (function(m,e,t,r,i,k,a){
             m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
@@ -57,7 +67,6 @@
         ym(108448723, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
     </script>
     <noscript><div><img src="https://mc.yandex.ru/watch/108448723" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-    <!-- /Yandex.Metrika counter -->
     
     <!-- === СТИЛИ И ШРИФТЫ === -->
     <link rel="stylesheet" href="/static/style.css">
@@ -78,9 +87,13 @@
                 <p>Нажимая кнопку "Я ОЗНАКОМЛЕН", вы подтверждаете что:</p>
                 <ul class="warning-list">
                     <li>Понимаете информационный характер консультаций</li>
-                    <li>Согласны с политикой конфиденциальности</li>
-                    <li>Принимаете ограничения ответственности сервиса</li>
+                    <li>Согласны с <a href="/privacy-policy.html" class="legal-inline-link">Политикой конфиденциальности</a></li>
+                    <li>Принимаете <a href="/terms.html" class="legal-inline-link">Пользовательское соглашение</a> и ограничения ответственности</li>
+                    <li>Не будете указывать персональные данные третьих лиц без их согласия</li>
                 </ul>
+                <p style="color:#888;font-size:0.9rem;margin-top:15px;">
+                    ⚠️ Ответы формируются с помощью искусственного интеллекта. Возможны неточности. Всегда перепроверяйте критически важные решения у живого юриста.
+                </p>
             </div>
             <div class="modal-footer">
                 <button class="modal-btn" onclick="acceptRules()">Я ОЗНАКОМЛЕН И ПРИНИМАЮ УСЛОВИЯ</button>
@@ -90,11 +103,15 @@
 
     <div class="container">
         
-        <!-- === ЗАГОЛОВОК (H1 для SEO) === -->
+        <!-- === ЗАГОЛОВОК === -->
         <header class="header">
             <h1>УМНЫЙ ЮРИСТ AI</h1>
             <p class="subtitle">Информационно-справочный AI-сервис по законодательству РБ, РФ, РК</p>
             <div class="header-ornament"></div>
+            <!-- Бейдж актуальности базы -->
+            <div class="base-updated-badge">
+                📅 Правовая база актуальна на: <span id="lastUpdate">12.04.2026</span>
+            </div>
         </header>
 
         <!-- === ВЫБОР ЮРИСДИКЦИИ === -->
@@ -155,14 +172,18 @@
                         </div>
                         <div class="rule-card">
                             <h4>3. КОНФИДЕНЦИАЛЬНОСТЬ</h4>
-                            <p>Не указывайте персональные данные третьих лиц без согласия.</p>
+                            <p>Не указывайте персональные данные третьих лиц без согласия. Вопросы могут использоваться для улучшения сервиса в обезличенном виде.</p>
+                        </div>
+                        <div class="rule-card">
+                            <h4>4. ИСПОЛЬЗОВАНИЕ ИИ</h4>
+                            <p>Ответы генерируются искусственным интеллектом. Возможны неточности. Всегда перепроверяйте важные решения у юриста.</p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- === КАТЕГОРИИ (Ключевые слова в заголовках) === -->
+        <!-- === КАТЕГОРИИ === -->
         <section class="categories-menu">
             <h2 class="section-title-main">КАТЕГОРИИ ПРАВОВЫХ ВОПРОСОВ</h2>
             
@@ -223,9 +244,28 @@
         <!-- === ПОДВАЛ (Footer) === -->
         <footer class="footer">
             <div class="footer-ornament"></div>
+            
+            <!-- Ссылка на ВКонтакте -->
+            <div class="social-links">
+                <a href="https://vk.com/club237514379" target="_blank" class="vk-link" rel="noopener" aria-label="Наша группа ВКонтакте">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M15.684 0H8.316C1.592 0 0 1.592 0 8.316v7.368C0 22.408 1.592 24 8.316 24h7.368C22.408 24 24 22.408 24 15.684V8.316C24 1.592 22.408 0 15.684 0zm3.692 10.273h-2.05c-.322 0-.418.152-.418.402v2.64c0 .468.14.635.46.635h.71c.327 0 .477.166.477.54v.903c0 .395-.107.594-.52.594h-1.44c-.374 0-.683-.194-.683-.578v-5.28c0-.332-.146-.494-.477-.494h-1.98c-.38 0-.61.277-.61.53v3.12c0 .311-.15.44-.402.44h-1.63c-.327 0-.53-.16-.53-.515V9.03c0-.31-.145-.47-.46-.47h-2.07c-.374 0-.45.177-.45.46 0 .766 1.03 7.44 6.06 7.44 3.19 0 4.88-2.59 4.88-4.23v-1.04c0-.374.114-.54.46-.54z"/>
+                    </svg>
+                    Наша группа ВКонтакте
+                </a>
+            </div>
+            
+            <!-- Юридические ссылки -->
+            <p class="legal-links">
+                <a href="/privacy-policy.html" class="legal-link">Политика конфиденциальности</a> | 
+                <a href="/terms.html" class="legal-link">Пользовательское соглашение</a>
+            </p>
+            
+            <!-- Усиленный дисклеймер -->
             <p class="disclaimer">
                 <strong>ВНИМАНИЕ:</strong> Данный сервис носит исключительно вспомогательный информационный характер. 
                 Предоставленная информация не является официальной юридической консультацией. 
+                Ответы формируются с помощью искусственного интеллекта и могут содержать неточности.
                 Для представления интересов в суде и подготовки процессуальных документов 
                 обращайтесь к квалифицированным юристам с соответствующей лицензией.
             </p>
